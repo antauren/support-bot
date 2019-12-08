@@ -6,7 +6,7 @@ from dotenv import dotenv_values
 from vk_api import VkApi
 from vk_api.longpoll import VkLongPoll, VkEventType
 
-from utils.dialogflow import detect_intent_texts
+from utils.dialogflow import detect_intent_text
 
 
 def start_bot(token, project_id, language_code='ru'):
@@ -19,21 +19,19 @@ def start_bot(token, project_id, language_code='ru'):
         if not (event.type == VkEventType.MESSAGE_NEW and event.to_me):
             continue
 
-        responses = detect_intent_texts(project_id=project_id,
-                                        session_id=event.user_id,
-                                        texts=[event.text],
-                                        language_code=language_code
-                                        )
+        response = detect_intent_text(project_id=project_id,
+                                      session_id=event.user_id,
+                                      text=event.text,
+                                      language_code=language_code
+                                      )
 
-        for response in responses:
+        if response['display_name'] == 'Default Fallback Intent':
+            continue
 
-            if response['display_name'] == 'Default Fallback Intent':
-                continue
-
-            vk_session_api.messages.send(user_id=event.user_id,
-                                         message=response['answer'],
-                                         random_id=random.randint(1, 1000)
-                                         )
+        vk_session_api.messages.send(user_id=event.user_id,
+                                     message=response['answer'],
+                                     random_id=random.randint(1, 1000)
+                                     )
 
 
 if __name__ == '__main__':
