@@ -1,8 +1,6 @@
 import os
 import random
 
-from dotenv import dotenv_values
-
 from vk_api import VkApi
 from vk_api.longpoll import VkLongPoll, VkEventType
 
@@ -35,11 +33,7 @@ def start_bot(token, project_id, language_code='ru'):
 
 
 if __name__ == '__main__':
-    dotenv_dict = dotenv_values()
-
-    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = dotenv_dict['GOOGLE_APPLICATION_CREDENTIALS']
-
     start_bot(
-        token=dotenv_dict['VK_GROUP_TOKEN'],
-        project_id=dotenv_dict['PROJECT_ID']
+        token=os.environ['VK_GROUP_TOKEN'],
+        project_id=os.environ['PROJECT_ID']
     )
