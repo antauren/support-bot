@@ -21,8 +21,10 @@ def help(bot, update):
     update.message.reply_text('Help!')
 
 
-def error(bot, update, error, logger):
+def error(bot, update, error, logger, chat_id):
     '''Log Errors caused by Updates.'''
+
+    bot.send_message(chat_id=chat_id, text=error)
     logger.warning('Update "%s" caused error "%s"', update, error)
 
 
@@ -74,8 +76,12 @@ if __name__ == '__main__':
                         level=logging.INFO
                         )
     logger = logging.getLogger(__name__)
-    p_error = partial(error, logger=logger)
+    p_error = partial(error,
+                      logger=logger,
+                      chat_id=dotenv_dict['TELEGRAM_CHAT_ID']
+                      )
 
     start_bot(token=dotenv_dict['TELEGRAM_TOKEN'],
               message_handler=p_get_answer,
-              error_handler=p_error)
+              error_handler=p_error
+              )
