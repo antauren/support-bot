@@ -5,6 +5,7 @@ from vk_api import VkApi
 from vk_api.longpoll import VkLongPoll, VkEventType
 
 from utils.dialogflow import detect_intent_text
+from dotenv import dotenv_values, load_dotenv
 
 
 def start_bot(token, project_id, language_code='ru'):
@@ -33,6 +34,9 @@ def start_bot(token, project_id, language_code='ru'):
 
 
 if __name__ == '__main__':
+    dotenv_dict = dotenv_values()
+    load_dotenv()
+
     start_bot(
         token=os.environ['VK_GROUP_TOKEN'],
         project_id=os.environ['PROJECT_ID']
