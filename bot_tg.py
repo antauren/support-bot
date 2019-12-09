@@ -2,7 +2,6 @@ import os
 import logging
 
 from functools import partial
-from dotenv import dotenv_values
 
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
@@ -62,12 +61,13 @@ def start_bot(token, message_handler, error_handler):
 
 
 if __name__ == '__main__':
-    dotenv_dict = dotenv_values()
-
-    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = dotenv_dict['GOOGLE_APPLICATION_CREDENTIALS']
+    GOOGLE_APPLICATION_CREDENTIALS = os.environ['GOOGLE_APPLICATION_CREDENTIALS']
+    project_id = os.environ['PROJECT_ID']
+    chat_id = os.environ['TELEGRAM_CHAT_ID']
+    token = os.environ['TELEGRAM_TOKEN']
 
     p_get_answer = partial(get_answer,
-                           project_id=dotenv_dict['PROJECT_ID'],
+                           project_id=project_id,
                            language_code='ru'
                            )
 
@@ -78,10 +78,10 @@ if __name__ == '__main__':
     logger = logging.getLogger(__name__)
     p_error = partial(error,
                       logger=logger,
-                      chat_id=dotenv_dict['TELEGRAM_CHAT_ID']
+                      chat_id=chat_id
                       )
 
-    start_bot(token=dotenv_dict['TELEGRAM_TOKEN'],
+    start_bot(token=token,
               message_handler=p_get_answer,
               error_handler=p_error
               )
