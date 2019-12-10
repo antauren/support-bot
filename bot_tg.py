@@ -21,10 +21,9 @@ def help(bot, update):
     update.message.reply_text('Help!')
 
 
-def error(bot, update, error, logger, chat_id):
+def error(bot, update, error, logger):
     '''Log Errors caused by Updates.'''
 
-    bot.send_message(chat_id=chat_id, text=error)
     logger.warning('Update "%s" caused error "%s"', update, error)
 
 
@@ -62,13 +61,11 @@ def start_bot(token, message_handler, error_handler):
 
 
 if __name__ == '__main__':
-    dotenv_dict = dotenv_values()
+    # dotenv_dict = dotenv_values()
 
     load_dotenv()
 
-    GOOGLE_APPLICATION_CREDENTIALS = os.environ['GOOGLE_APPLICATION_CREDENTIALS']
     project_id = os.environ['PROJECT_ID']
-    chat_id = os.environ['TELEGRAM_CHAT_ID']
     token = os.environ['TELEGRAM_TOKEN']
 
     p_get_answer = partial(get_answer,
@@ -82,8 +79,8 @@ if __name__ == '__main__':
                         )
     logger = logging.getLogger(__name__)
     p_error = partial(error,
-                      logger=logger,
-                      chat_id=chat_id
+                      logger=logger
+
                       )
 
     start_bot(token=token,
