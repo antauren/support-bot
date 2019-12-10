@@ -34,7 +34,7 @@ def start_bot(token, project_id, language_code='ru'):
 
 
 if __name__ == '__main__':
-    dotenv_dict = dotenv_values()
+    # dotenv_dict = dotenv_values()
     load_dotenv()
 
     start_bot(
