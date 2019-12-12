@@ -66,7 +66,7 @@ if __name__ == '__main__':
     load_dotenv()
 
     p_get_answer = partial(get_answer,
-                           project_id=os.environ['DF_PROJECT_ID'],
+                           project_id=os.environ['DIALOGFLOW_PROJECT_ID'],
                            language_code='ru'
                            )
 

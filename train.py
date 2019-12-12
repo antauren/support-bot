@@ -16,8 +16,8 @@ if __name__ == '__main__':
 
     load_dotenv()
 
-    project_id = os.environ['DF_PROJECT_ID']
-    path = os.environ['INTENTS_DATA_PATH']
+    project_id = os.environ['DIALOGFLOW_PROJECT_ID']
+    path = os.environ['TRAIN_DATA_PATH']
 
     intents_data = load_json(path)
 

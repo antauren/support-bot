@@ -51,6 +51,6 @@ if __name__ == '__main__':
                                  )
 
     start_bot(token=os.environ['VK_GROUP_TOKEN'],
-              project_id=os.environ['DF_PROJECT_ID'],
+              project_id=os.environ['DIALOGFLOW_PROJECT_ID'],
               logger=bot_logger
               )
