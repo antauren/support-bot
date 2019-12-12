@@ -1,12 +1,12 @@
 import os
-import logging
 
 from functools import partial
-from dotenv import dotenv_values, load_dotenv
+from dotenv import load_dotenv
 
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 from utils.dialogflow import detect_intent_text
+from utils.bot_logger import make_bot_logger
 
 
 # Define a few command handlers. These usually take the two arguments bot and
@@ -23,6 +23,8 @@ def help(bot, update):
 
 def error(bot, update, error, logger):
     '''Log Errors caused by Updates.'''
+
+    logger.exception(error)
 
     logger.warning('Update "%s" caused error "%s"', update, error)
 
@@ -61,29 +63,20 @@ def start_bot(token, message_handler, error_handler):
 
 
 if __name__ == '__main__':
-    # dotenv_dict = dotenv_values()
-
     load_dotenv()
 
-    project_id = os.environ['PROJECT_ID']
-    token = os.environ['TELEGRAM_TOKEN']
-
     p_get_answer = partial(get_answer,
-                           project_id=project_id,
+                           project_id=os.environ['DF_PROJECT_ID'],
                            language_code='ru'
                            )
 
     # Enable logging
-    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                        level=logging.INFO
-                        )
-    logger = logging.getLogger(__name__)
-    p_error = partial(error,
-                      logger=logger
+    bot_logger = make_bot_logger(token=os.environ['TG_BOT_TOKEN'],
+                                 chat_id=os.environ['TG_LOG_CHAT_ID']
+                                 )
+    p_error = partial(error, logger=bot_logger)
 
-                      )
-
-    start_bot(token=token,
+    start_bot(token=os.environ['TG_BOT_TOKEN'],
               message_handler=p_get_answer,
               error_handler=p_error
               )
