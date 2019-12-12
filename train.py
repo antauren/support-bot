@@ -1,6 +1,6 @@
 import os
 import json
-from dotenv import dotenv_values
+from dotenv import load_dotenv
 
 from tqdm import tqdm
 
@@ -13,12 +13,12 @@ def load_json(path) -> dict:
 
 
 if __name__ == '__main__':
-    dotenv_dict = dotenv_values()
 
-    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = dotenv_dict['GOOGLE_APPLICATION_CREDENTIALS']
-    project_id = dotenv_dict['PROJECT_ID']
+    load_dotenv()
 
-    path = dotenv_dict['INTENTS_DATA_PATH']
+    project_id = os.environ['DF_PROJECT_ID']
+    path = os.environ['INTENTS_DATA_PATH']
+
     intents_data = load_json(path)
 
     for display_name, intent_dict in tqdm(intents_data.items(), desc='training'):
