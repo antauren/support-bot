@@ -30,7 +30,7 @@ def start_bot(token, project_id, logger, language_code='ru'):
             logger.exception(error)
             continue
 
-        if response['display_name'] == 'Default Fallback Intent':
+        if response['is_fallback']:
             continue
 
         try:

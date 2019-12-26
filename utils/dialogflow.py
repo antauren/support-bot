@@ -28,7 +28,8 @@ def detect_intent_texts(project_id, session_id, texts, language_code):
         yield {'query': response.query_result.query_text,
                'answer': response.query_result.fulfillment_text,
                'display_name': response.query_result.intent.display_name,
-               'confidence': response.query_result.intent_detection_confidence
+               'confidence': response.query_result.intent_detection_confidence,
+               'is_fallback': response.query_result.intent.is_fallback
                }
 
 
