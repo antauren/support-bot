@@ -18,7 +18,8 @@ def start(bot, update):
 
 def help(bot, update):
     '''Send a message when the command /help is issued.'''
-    update.message.reply_text('Help!')
+    text = 'Задайте вопрос. Если бот Вас не понял, то попробуйте сформулировать попроще.'
+    update.message.reply_text(text)
 
 
 def get_error(bot, update, error, logger):
