@@ -21,7 +21,7 @@ def help(bot, update):
     update.message.reply_text('Help!')
 
 
-def error(bot, update, error, logger):
+def get_error(bot, update, error, logger):
     '''Log Errors caused by Updates.'''
 
     logger.exception(error)
@@ -74,7 +74,7 @@ if __name__ == '__main__':
     bot_logger = make_bot_logger(token=os.environ['TG_BOT_TOKEN'],
                                  chat_id=os.environ['TG_LOG_CHAT_ID']
                                  )
-    p_error = partial(error, logger=bot_logger)
+    p_error = partial(get_error, logger=bot_logger)
 
     start_bot(token=os.environ['TG_BOT_TOKEN'],
               message_handler=p_get_answer,
