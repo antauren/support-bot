@@ -6,7 +6,11 @@ from dotenv import load_dotenv
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 from utils.dialogflow import detect_intent_text
-from utils.bot_logger import make_bot_logger
+from utils.bot_logger import enamble_bot_logging
+
+import logging
+
+logger = logging.getLogger(__file__)
 
 
 # Define a few command handlers. These usually take the two arguments bot and
@@ -22,7 +26,7 @@ def help(bot, update):
     update.message.reply_text(text)
 
 
-def get_error(bot, update, error, logger):
+def get_error(bot, update, error):
     '''Log Errors caused by Updates.'''
 
     logger.exception(error)
@@ -66,18 +70,20 @@ def start_bot(token, message_handler, error_handler):
 if __name__ == '__main__':
     load_dotenv()
 
+    logging.basicConfig(level=logging.ERROR)
+
     p_get_answer = partial(get_answer,
                            project_id=os.environ['DIALOGFLOW_PROJECT_ID'],
                            language_code='ru'
                            )
 
     # Enable logging
-    bot_logger = make_bot_logger(token=os.environ['TG_BOT_TOKEN'],
-                                 chat_id=os.environ['TG_LOG_CHAT_ID']
-                                 )
-    p_error = partial(get_error, logger=bot_logger)
+    enamble_bot_logging(token=os.environ['TG_BOT_TOKEN'],
+                        chat_id=os.environ['TG_LOG_CHAT_ID'],
+                        logger=logger
+                        )
 
     start_bot(token=os.environ['TG_BOT_TOKEN'],
               message_handler=p_get_answer,
-              error_handler=p_error
+              error_handler=get_error
               )

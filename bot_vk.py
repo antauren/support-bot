@@ -7,10 +7,14 @@ from vk_api import VkApi
 from vk_api.longpoll import VkLongPoll, VkEventType
 
 from utils.dialogflow import detect_intent_text
-from utils.bot_logger import make_bot_logger
+from utils.bot_logger import enamble_bot_logging
+
+import logging
+
+logger = logging.getLogger(__file__)
 
 
-def start_bot(token, project_id, logger, language_code='ru'):
+def start_bot(token, project_id, language_code='ru'):
     vk_session = VkApi(token=token)
     vk_session_api = vk_session.get_api()
 
@@ -46,11 +50,13 @@ def start_bot(token, project_id, logger, language_code='ru'):
 if __name__ == '__main__':
     load_dotenv()
 
-    bot_logger = make_bot_logger(token=os.environ['TG_BOT_TOKEN'],
-                                 chat_id=os.environ['TG_LOG_CHAT_ID']
-                                 )
+    logging.basicConfig(level=logging.ERROR)
+
+    enamble_bot_logging(token=os.environ['TG_BOT_TOKEN'],
+                        chat_id=os.environ['TG_LOG_CHAT_ID'],
+                        logger=logger
+                        )
 
     start_bot(token=os.environ['VK_GROUP_TOKEN'],
-              project_id=os.environ['DIALOGFLOW_PROJECT_ID'],
-              logger=bot_logger
+              project_id=os.environ['DIALOGFLOW_PROJECT_ID']
               )

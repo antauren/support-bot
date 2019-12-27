@@ -15,12 +15,7 @@ class LogsHandler(logging.Handler):
         self.bot.send_message(chat_id=self.chat_id, text=log_entry)
 
 
-def make_bot_logger(token, chat_id):
+def enamble_bot_logging(token, chat_id, logger):
     bot = Bot(token=token)
 
-    logger = logging.getLogger('Bot-logger')
-    logger.setLevel(logging.INFO)
-
     logger.addHandler(LogsHandler(bot, chat_id))
-
-    return logger
